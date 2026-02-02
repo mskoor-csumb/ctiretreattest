@@ -617,14 +617,14 @@ body {
   margin-bottom: 4px;
 }
 
-.popup-title a {
+.popup-link {
   color: #3498db;
   text-decoration: underline;
   cursor: pointer;
   pointer-events: auto;
 }
 
-.popup-title a:hover {
+.popup-link:hover {
   color: #e94560;
 }
 
@@ -634,15 +634,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.popup-url a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-.popup-url a:hover {
-  text-decoration: underline;
 }
 
 .popup-cuisine {
