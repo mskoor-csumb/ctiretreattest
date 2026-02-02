@@ -108,8 +108,8 @@ function renderMarkers() {
 
     // Title (linked if URL exists)
     if (rec.url) {
-      popupHtml += `<div class="popup-title"><span class="popup-link" onclick="window.open('${escapeHtml(rec.url)}', '_blank')">${escapeHtml(rec.place)}</span></div>`;
-      popupHtml += `<div class="popup-url"><span class="popup-link" onclick="window.open('${escapeHtml(rec.url)}', '_blank')">${escapeHtml(rec.url)}</span></div>`;
+      popupHtml += `<div class="popup-title"><span class="popup-link" data-url="${escapeHtml(rec.url)}">${escapeHtml(rec.place)}</span></div>`;
+      popupHtml += `<div class="popup-url"><span class="popup-link" data-url="${escapeHtml(rec.url)}">${escapeHtml(rec.url)}</span></div>`;
     } else {
       popupHtml += `<div class="popup-title">${escapeHtml(rec.place)}</div>`;
     }
@@ -596,6 +596,16 @@ window.clearTrip = function() {
   document.getElementById('trip-city').value = '';
   clearTripMarkers();
 };
+
+// ── Popup Link Handler (document-level delegation) ──
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.popup-link');
+  if (link && link.dataset.url) {
+    e.stopPropagation();
+    e.preventDefault();
+    window.open(link.dataset.url, '_blank');
+  }
+}, true);
 
 // ── Utilities ──
 function generateId() {
