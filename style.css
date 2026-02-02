@@ -593,6 +593,12 @@ body {
 .leaflet-popup-content {
   margin: 12px 16px !important;
   font-family: 'Poppins', sans-serif !important;
+  pointer-events: auto;
+}
+
+.leaflet-popup-content a {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .popup-photo {
@@ -612,13 +618,14 @@ body {
 }
 
 .popup-title a {
-  color: #f5f5f5;
-  text-decoration: none;
+  color: #3498db;
+  text-decoration: underline;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .popup-title a:hover {
   color: #e94560;
-  text-decoration: underline;
 }
 
 .popup-url {
