@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TasteBuds - Food Recs From Friends Around the World</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">Taste<span>Buds</span></h1>
+        <p class="tagline">Food recs from friends around the world</p>
+      </div>
+
+      <!-- Friends Section -->
+      <div class="section">
+        <h2>Your Buds</h2>
+        <div id="friends-list"></div>
+        <button id="add-friend-btn" class="btn btn-secondary">+ Add a Bud</button>
+      </div>
+
+      <!-- Recommendations Section -->
+      <div class="section">
+        <h2>Add a Recommendation</h2>
+        <form id="rec-form">
+          <div class="form-group">
+            <label for="rec-friend">From which Bud?</label>
+            <select id="rec-friend" required>
+              <option value="">Select a bud...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rec-place">Place Name</label>
+            <input type="text" id="rec-place" placeholder="e.g. Joe's Pizza" required>
+          </div>
+          <div class="form-group">
+            <label for="rec-cuisine">Cuisine Type</label>
+            <input type="text" id="rec-cuisine" placeholder="e.g. Italian, Sushi, Tacos">
+          </div>
+          <div class="form-group">
+            <label for="rec-note">What to order / Notes</label>
+            <textarea id="rec-note" rows="2" placeholder="Get the margherita pizza!"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="rec-rating">Rating</label>
+            <div id="star-rating" class="star-rating">
+              <span class="star" data-value="1">&#9733;</span>
+              <span class="star" data-value="2">&#9733;</span>
+              <span class="star" data-value="3">&#9733;</span>
+              <span class="star" data-value="4">&#9733;</span>
+              <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <input type="hidden" id="rec-rating" value="0">
+          </div>
+          <div class="form-group">
+            <label>Location (click on the map or enter coordinates)</label>
+            <div class="coord-row">
+              <input type="number" id="rec-lat" step="any" placeholder="Latitude" required>
+              <input type="number" id="rec-lng" step="any" placeholder="Longitude" required>
+            </div>
+            <p class="hint">Click anywhere on the map to set location</p>
+          </div>
+          <button type="submit" class="btn btn-primary">Pin It!</button>
+        </form>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="section">
+        <h2>Filter</h2>
+        <div class="form-group">
+          <label for="filter-friend">By Bud</label>
+          <select id="filter-friend">
+            <option value="all">All Buds</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="filter-cuisine">By Cuisine</label>
+          <input type="text" id="filter-cuisine" placeholder="Type to filter...">
+        </div>
+      </div>
+    </aside>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Add Friend Modal -->
+    <div id="friend-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Add a New Bud</h2>
+        <form id="friend-form">
+          <div class="form-group">
+            <label for="friend-name">Name</label>
+            <input type="text" id="friend-name" placeholder="e.g. Sarah" required>
+          </div>
+          <div class="form-group">
+            <label for="friend-color">Pin Color</label>
+            <div id="color-picker" class="color-picker">
+              <span class="color-swatch active" data-color="#e74c3c" style="background:#e74c3c"></span>
+              <span class="color-swatch" data-color="#3498db" style="background:#3498db"></span>
+              <span class="color-swatch" data-color="#2ecc71" style="background:#2ecc71"></span>
+              <span class="color-swatch" data-color="#f39c12" style="background:#f39c12"></span>
+              <span class="color-swatch" data-color="#9b59b6" style="background:#9b59b6"></span>
+              <span class="color-swatch" data-color="#1abc9c" style="background:#1abc9c"></span>
+              <span class="color-swatch" data-color="#e67e22" style="background:#e67e22"></span>
+              <span class="color-swatch" data-color="#e84393" style="background:#e84393"></span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancel-friend" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Bud</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Location placement indicator -->
+    <div id="placement-banner" class="placement-banner hidden">
+      Click on the map to set the restaurant location. Press <kbd>Esc</kbd> to cancel.
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
