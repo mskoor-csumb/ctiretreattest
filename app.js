@@ -98,35 +98,84 @@ function renderMarkers() {
 
     const stars = '★'.repeat(rec.rating) + '☆'.repeat(5 - rec.rating);
 
-    // Build popup HTML
-    let popupHtml = '';
+    // Build popup as a real DOM node
+    const popupDiv = document.createElement('div');
 
     // Photo
     if (rec.photo) {
-      popupHtml += `<img class="popup-photo" src="${rec.photo}" onclick="openLightbox('${rec.id}')" alt="Food photo">`;
+      const img = document.createElement('img');
+      img.className = 'popup-photo';
+      img.src = rec.photo;
+      img.alt = 'Food photo';
+      img.addEventListener('click', () => openLightbox(rec.id));
+      popupDiv.appendChild(img);
     }
 
     // Title (linked if URL exists)
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'popup-title';
     if (rec.url) {
-      popupHtml += `<div class="popup-title"><span class="popup-link" data-url="${escapeHtml(rec.url)}">${escapeHtml(rec.place)}</span></div>`;
-      popupHtml += `<div class="popup-url"><span class="popup-link" data-url="${escapeHtml(rec.url)}">${escapeHtml(rec.url)}</span></div>`;
+      const titleLink = document.createElement('a');
+      titleLink.href = rec.url;
+      titleLink.target = '_blank';
+      titleLink.rel = 'noopener';
+      titleLink.className = 'popup-link';
+      titleLink.textContent = rec.place;
+      L.DomEvent.disableClickPropagation(titleLink);
+      titleDiv.appendChild(titleLink);
+      popupDiv.appendChild(titleDiv);
+
+      const urlDiv = document.createElement('div');
+      urlDiv.className = 'popup-url';
+      const urlLink = document.createElement('a');
+      urlLink.href = rec.url;
+      urlLink.target = '_blank';
+      urlLink.rel = 'noopener';
+      urlLink.className = 'popup-link';
+      urlLink.textContent = rec.url;
+      L.DomEvent.disableClickPropagation(urlLink);
+      urlDiv.appendChild(urlLink);
+      popupDiv.appendChild(urlDiv);
     } else {
-      popupHtml += `<div class="popup-title">${escapeHtml(rec.place)}</div>`;
+      titleDiv.textContent = rec.place;
+      popupDiv.appendChild(titleDiv);
     }
 
     if (rec.cuisine) {
-      popupHtml += `<div class="popup-cuisine">${escapeHtml(rec.cuisine)}</div>`;
+      const cuisineDiv = document.createElement('div');
+      cuisineDiv.className = 'popup-cuisine';
+      cuisineDiv.textContent = rec.cuisine;
+      popupDiv.appendChild(cuisineDiv);
     }
-    popupHtml += `<div class="popup-stars">${stars}</div>`;
+
+    const starsDiv = document.createElement('div');
+    starsDiv.className = 'popup-stars';
+    starsDiv.textContent = stars;
+    popupDiv.appendChild(starsDiv);
+
     if (rec.note) {
-      popupHtml += `<div class="popup-note">"${escapeHtml(rec.note)}"</div>`;
+      const noteDiv = document.createElement('div');
+      noteDiv.className = 'popup-note';
+      noteDiv.textContent = '"' + rec.note + '"';
+      popupDiv.appendChild(noteDiv);
     }
-    popupHtml += `<div class="popup-friend">Recommended by <strong style="color:${friend.color}">${escapeHtml(friend.name)}</strong></div>`;
-    popupHtml += `<button class="popup-delete-btn" onclick="deleteRec('${rec.id}')">Remove</button>`;
+
+    const friendDiv = document.createElement('div');
+    friendDiv.className = 'popup-friend';
+    friendDiv.innerHTML = `Recommended by <strong style="color:${friend.color}">${escapeHtml(friend.name)}</strong>`;
+    popupDiv.appendChild(friendDiv);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'popup-delete-btn';
+    deleteBtn.textContent = 'Remove';
+    deleteBtn.addEventListener('click', () => deleteRec(rec.id));
+    popupDiv.appendChild(deleteBtn);
+
+    L.DomEvent.disableClickPropagation(popupDiv);
 
     const marker = L.marker([rec.lat, rec.lng], { icon: createMarkerIcon(friend.color) })
       .addTo(map)
-      .bindPopup(popupHtml, { maxWidth: 280, interactive: true });
+      .bindPopup(popupDiv, { maxWidth: 280 });
 
     markers.push(marker);
   });
@@ -596,21 +645,6 @@ window.clearTrip = function() {
   document.getElementById('trip-city').value = '';
   clearTripMarkers();
 };
-
-// ── Popup Link Handler (bind after popup opens) ──
-map.on('popupopen', function(e) {
-  const container = e.popup.getElement();
-  if (!container) return;
-  const links = container.querySelectorAll('.popup-link');
-  links.forEach(function(link) {
-    link.addEventListener('click', function(evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-      var url = this.getAttribute('data-url');
-      if (url) window.open(url, '_blank');
-    });
-  });
-});
 
 // ── Utilities ──
 function generateId() {
