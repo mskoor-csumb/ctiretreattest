@@ -597,15 +597,20 @@ window.clearTrip = function() {
   clearTripMarkers();
 };
 
-// ── Popup Link Handler (document-level delegation) ──
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('.popup-link');
-  if (link && link.dataset.url) {
-    e.stopPropagation();
-    e.preventDefault();
-    window.open(link.dataset.url, '_blank');
-  }
-}, true);
+// ── Popup Link Handler (bind after popup opens) ──
+map.on('popupopen', function(e) {
+  const container = e.popup.getElement();
+  if (!container) return;
+  const links = container.querySelectorAll('.popup-link');
+  links.forEach(function(link) {
+    link.addEventListener('click', function(evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      var url = this.getAttribute('data-url');
+      if (url) window.open(url, '_blank');
+    });
+  });
+});
 
 // ── Utilities ──
 function generateId() {
