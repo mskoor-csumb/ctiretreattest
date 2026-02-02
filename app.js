@@ -126,7 +126,7 @@ function renderMarkers() {
 
     const marker = L.marker([rec.lat, rec.lng], { icon: createMarkerIcon(friend.color) })
       .addTo(map)
-      .bindPopup(popupHtml, { maxWidth: 280 });
+      .bindPopup(popupHtml, { maxWidth: 280, interactive: true });
 
     markers.push(marker);
   });
