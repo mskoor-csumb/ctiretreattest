@@ -39,12 +39,30 @@
             <input type="text" id="rec-place" placeholder="e.g. Joe's Pizza" required>
           </div>
           <div class="form-group">
+            <label for="rec-url">Website / Link</label>
+            <input type="url" id="rec-url" placeholder="https://joespizza.com">
+          </div>
+          <div class="form-group">
             <label for="rec-cuisine">Cuisine Type</label>
             <input type="text" id="rec-cuisine" placeholder="e.g. Italian, Sushi, Tacos">
           </div>
           <div class="form-group">
             <label for="rec-note">What to order / Notes</label>
             <textarea id="rec-note" rows="2" placeholder="Get the margherita pizza!"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="rec-photo">Photo</label>
+            <div class="photo-upload-area" id="photo-upload-area">
+              <input type="file" id="rec-photo" accept="image/*" class="photo-input">
+              <div class="photo-placeholder" id="photo-placeholder">
+                <span class="photo-icon">&#128247;</span>
+                <span>Drop a photo or click to upload</span>
+              </div>
+              <div class="photo-preview hidden" id="photo-preview">
+                <img id="photo-preview-img" alt="Preview">
+                <button type="button" id="remove-photo" class="photo-remove-btn">&times;</button>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="rec-rating">Rating</label>
@@ -83,6 +101,26 @@
           <input type="text" id="filter-cuisine" placeholder="Type to filter...">
         </div>
       </div>
+
+      <!-- Trip Planner Section -->
+      <div class="section">
+        <h2>Trip Planner</h2>
+        <p class="section-desc">Pick a city and see all recs nearby, organized by how long you're staying.</p>
+        <div class="form-group">
+          <label for="trip-city">City / Location</label>
+          <input type="text" id="trip-city" placeholder="e.g. Tokyo, Paris, NYC">
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <div class="duration-pills">
+            <button type="button" class="pill active" data-duration="24h">24 Hours</button>
+            <button type="button" class="pill" data-duration="3d">3 Days</button>
+            <button type="button" class="pill" data-duration="1w">1 Week</button>
+          </div>
+        </div>
+        <button id="plan-trip-btn" class="btn btn-primary">Plan My Trip</button>
+        <div id="trip-results" class="trip-results hidden"></div>
+      </div>
     </aside>
 
     <!-- Map -->
@@ -115,6 +153,14 @@
             <button type="submit" class="btn btn-primary">Add Bud</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Photo Lightbox Modal -->
+    <div id="lightbox-modal" class="modal hidden">
+      <div class="lightbox-content">
+        <img id="lightbox-img" alt="Food photo">
+        <button id="lightbox-close" class="lightbox-close">&times;</button>
       </div>
     </div>
 
