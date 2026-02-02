@@ -115,25 +115,19 @@ function renderMarkers() {
     const titleDiv = document.createElement('div');
     titleDiv.className = 'popup-title';
     if (rec.url) {
-      const titleLink = document.createElement('a');
-      titleLink.href = rec.url;
-      titleLink.target = '_blank';
-      titleLink.rel = 'noopener';
+      const titleLink = document.createElement('span');
       titleLink.className = 'popup-link';
       titleLink.textContent = rec.place;
-      L.DomEvent.disableClickPropagation(titleLink);
+      titleLink.addEventListener('mouseup', ((url) => () => { window.open(url, '_blank'); })(rec.url));
       titleDiv.appendChild(titleLink);
       popupDiv.appendChild(titleDiv);
 
       const urlDiv = document.createElement('div');
       urlDiv.className = 'popup-url';
-      const urlLink = document.createElement('a');
-      urlLink.href = rec.url;
-      urlLink.target = '_blank';
-      urlLink.rel = 'noopener';
+      const urlLink = document.createElement('span');
       urlLink.className = 'popup-link';
       urlLink.textContent = rec.url;
-      L.DomEvent.disableClickPropagation(urlLink);
+      urlLink.addEventListener('mouseup', ((url) => () => { window.open(url, '_blank'); })(rec.url));
       urlDiv.appendChild(urlLink);
       popupDiv.appendChild(urlDiv);
     } else {
@@ -170,8 +164,6 @@ function renderMarkers() {
     deleteBtn.textContent = 'Remove';
     deleteBtn.addEventListener('click', () => deleteRec(rec.id));
     popupDiv.appendChild(deleteBtn);
-
-    L.DomEvent.disableClickPropagation(popupDiv);
 
     const marker = L.marker([rec.lat, rec.lng], { icon: createMarkerIcon(friend.color) })
       .addTo(map)
